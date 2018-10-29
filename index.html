@@ -6,7 +6,7 @@
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" href="http://unpkg.com/leaflet@1.0.3/dist/leaflet.css">
+        <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/qgis2web.css">
         <link rel="stylesheet" href="css/Control.OSMGeocoder.css">
         <style>
@@ -23,7 +23,7 @@
         <div id="map">
         </div>
         <script src="js/qgis2web_expressions.js"></script>
-        <script src="http://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+        <script src="js/leaflet.js"></script>
         <script src="js/leaflet.rotatedMarker.js"></script>
         <script src="js/leaflet.pattern.js"></script>
         <script src="js/leaflet-hash.js"></script>
@@ -32,14 +32,14 @@
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
         <script src="js/Control.OSMGeocoder.js"></script>
-        <script src="data/100km_1000ha_Composante_0.js"></script>
-        <script src="data/100km_1000ha_Realiste_Chemin_1.js"></script>
-        <script src="data/100km_1000ha_Topologique_Lien_3.js"></script>
+        <script src="data/100km_4148voronoi_0.js"></script>
+        <script src="data/chemin100km_1.js"></script>
+        <script src="data/lien100km_3.js"></script>
         <script src="data/100km_1000ha_Topologique_Noeud_4.js"></script>
         <script>
         var map = L.map('map', {
             zoomControl:true, maxZoom:20, minZoom:1
-        })
+        }).fitBounds([[41.6321572496,-7.70527289076],[50.5662483419,13.8143505706]]);
         var hash = new L.Hash(map);
         map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
         var bounds_group = new L.featureGroup([]);
@@ -49,17 +49,20 @@
         });
         basemap0.addTo(map);
         function setBounds() {
-            if (bounds_group.getLayers().length) {
-                map.fitBounds(bounds_group.getBounds());
-            }
             map.setMaxBounds(map.getBounds());
         }
-        function pop_100km_1000ha_Composante_0(feature, layer) {
+        function pop_100km_4148voronoi_0(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Id'] !== null ? Autolinker.link(String(feature.properties['Id'])) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
-        function style_100km_1000ha_Composante_0_0() {
+        function style_100km_4148voronoi_0_0() {
             return {
-                pane: 'pane_100km_1000ha_Composante_0',
+                pane: 'pane_100km_4148voronoi_0',
                 opacity: 1,
                 color: 'rgba(0,0,0,1.0)',
                 dashArray: '',
@@ -68,39 +71,52 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(212,127,212,0.0)',
+                fillColor: 'rgba(189,165,29,0.0)',
             }
         }
-        map.createPane('pane_100km_1000ha_Composante_0');
-        map.getPane('pane_100km_1000ha_Composante_0').style.zIndex = 400;
-        map.getPane('pane_100km_1000ha_Composante_0').style['mix-blend-mode'] = 'normal';
-        var layer_100km_1000ha_Composante_0 = new L.geoJson(json_100km_1000ha_Composante_0, {
+        map.createPane('pane_100km_4148voronoi_0');
+        map.getPane('pane_100km_4148voronoi_0').style.zIndex = 400;
+        map.getPane('pane_100km_4148voronoi_0').style['mix-blend-mode'] = 'normal';
+        var layer_100km_4148voronoi_0 = new L.geoJson(json_100km_4148voronoi_0, {
             attribution: '<a href=""></a>',
-            pane: 'pane_100km_1000ha_Composante_0',
-            onEachFeature: pop_100km_1000ha_Composante_0,
-            style: style_100km_1000ha_Composante_0_0,
+            pane: 'pane_100km_4148voronoi_0',
+            onEachFeature: pop_100km_4148voronoi_0,
+            style: style_100km_4148voronoi_0_0,
         });
-        bounds_group.addLayer(layer_100km_1000ha_Composante_0);
-        map.addLayer(layer_100km_1000ha_Composante_0);
-        function pop_100km_1000ha_Realiste_Chemin_1(feature, layer) {
+        bounds_group.addLayer(layer_100km_4148voronoi_0);
+        map.addLayer(layer_100km_4148voronoi_0);
+        function pop_chemin100km_1(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
-                        <th scope="row">Coût cumulé</th>\
-                        <td>' + (feature.properties['Dist'] !== null ? Autolinker.link(String(feature.properties['Dist'])) : '') + '</td>\
+                        <td colspan="2">' + (feature.properties['Id'] !== null ? Autolinker.link(String(feature.properties['Id'])) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Distance (m)</th>\
-                        <td>' + (feature.properties['DistM'] !== null ? Autolinker.link(String(feature.properties['DistM'])) : '') + '</td>\
+                        <td colspan="2">' + (feature.properties['ID1'] !== null ? Autolinker.link(String(feature.properties['ID1'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ID2'] !== null ? Autolinker.link(String(feature.properties['ID2'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Dist'] !== null ? Autolinker.link(String(feature.properties['Dist'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DistM'] !== null ? Autolinker.link(String(feature.properties['DistM'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['BC_d4148'] !== null ? Autolinker.link(String(feature.properties['BC_d4148'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['BC_d1000'] !== null ? Autolinker.link(String(feature.properties['BC_d1000'])) : '') + '</td>\
                     </tr>\
                 </table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
-        function style_100km_1000ha_Realiste_Chemin_1_0() {
+        function style_chemin100km_1_0() {
             return {
-                pane: 'pane_100km_1000ha_Realiste_Chemin_1',
+                pane: 'pane_chemin100km_1',
                 opacity: 1,
-                color: 'rgba(113,113,113,1.0)',
+                color: 'rgba(191,73,250,1.0)',
                 dashArray: '',
                 lineCap: 'square',
                 lineJoin: 'bevel',
@@ -108,39 +124,49 @@
                 fillOpacity: 0,
             }
         }
-        map.createPane('pane_100km_1000ha_Realiste_Chemin_1');
-        map.getPane('pane_100km_1000ha_Realiste_Chemin_1').style.zIndex = 401;
-        map.getPane('pane_100km_1000ha_Realiste_Chemin_1').style['mix-blend-mode'] = 'normal';
-        var layer_100km_1000ha_Realiste_Chemin_1 = new L.geoJson(json_100km_1000ha_Realiste_Chemin_1, {
+        map.createPane('pane_chemin100km_1');
+        map.getPane('pane_chemin100km_1').style.zIndex = 401;
+        map.getPane('pane_chemin100km_1').style['mix-blend-mode'] = 'normal';
+        var layer_chemin100km_1 = new L.geoJson(json_chemin100km_1, {
             attribution: '<a href=""></a>',
-            pane: 'pane_100km_1000ha_Realiste_Chemin_1',
-            onEachFeature: pop_100km_1000ha_Realiste_Chemin_1,
-            style: style_100km_1000ha_Realiste_Chemin_1_0,
+            pane: 'pane_chemin100km_1',
+            onEachFeature: pop_chemin100km_1,
+            style: style_chemin100km_1_0,
         });
-        bounds_group.addLayer(layer_100km_1000ha_Realiste_Chemin_1);
-        var img_100km_1000ha_Realiste_Tache_2 = 'data/100km_1000ha_Realiste_Tache_2.png';
-        var img_bounds_100km_1000ha_Realiste_Tache_2 = [[42.1915388787,-3.05964996182],[50.7548078416,8.3385921131]];
-        var overlay_100km_1000ha_Realiste_Tache_2 = new L.imageOverlay(img_100km_1000ha_Realiste_Tache_2, img_bounds_100km_1000ha_Realiste_Tache_2);
-        bounds_group.addLayer(overlay_100km_1000ha_Realiste_Tache_2);
-        function pop_100km_1000ha_Topologique_Lien_3(feature, layer) {
+        bounds_group.addLayer(layer_chemin100km_1);
+        var img_tache1000ha_2 = 'data/tache1000ha_2.png';
+        var img_bounds_tache1000ha_2 = [[42.1915388787,-3.05964996182],[50.7548078416,8.3385921131]];
+        var overlay_tache1000ha_2 = new L.imageOverlay(img_tache1000ha_2, img_bounds_tache1000ha_2);
+        bounds_group.addLayer(overlay_tache1000ha_2);
+        function pop_lien100km_3(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
-                        <th scope="row">Coût cumulé</th>\
-                        <td>' + (feature.properties['Dist'] !== null ? Autolinker.link(String(feature.properties['Dist'])) : '') + '</td>\
+                        <td colspan="2">' + (feature.properties['Id'] !== null ? Autolinker.link(String(feature.properties['Id'])) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Distance (m)</th>\
-                        <td>' + (feature.properties['DistM'] !== null ? Autolinker.link(String(feature.properties['DistM'])) : '') + '</td>\
+                        <td colspan="2">' + (feature.properties['ID1'] !== null ? Autolinker.link(String(feature.properties['ID1'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ID2'] !== null ? Autolinker.link(String(feature.properties['ID2'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Dist'] !== null ? Autolinker.link(String(feature.properties['Dist'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DistM'] !== null ? Autolinker.link(String(feature.properties['DistM'])) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['BC_d4148'] !== null ? Autolinker.link(String(feature.properties['BC_d4148'])) : '') + '</td>\
                     </tr>\
                 </table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
-        function style_100km_1000ha_Topologique_Lien_3_0() {
+        function style_lien100km_3_0() {
             return {
-                pane: 'pane_100km_1000ha_Topologique_Lien_3',
+                pane: 'pane_lien100km_3',
                 opacity: 1,
-                color: 'rgba(113,113,113,1.0)',
+                color: 'rgba(47,19,184,1.0)',
                 dashArray: '',
                 lineCap: 'square',
                 lineJoin: 'bevel',
@@ -148,17 +174,17 @@
                 fillOpacity: 0,
             }
         }
-        map.createPane('pane_100km_1000ha_Topologique_Lien_3');
-        map.getPane('pane_100km_1000ha_Topologique_Lien_3').style.zIndex = 403;
-        map.getPane('pane_100km_1000ha_Topologique_Lien_3').style['mix-blend-mode'] = 'normal';
-        var layer_100km_1000ha_Topologique_Lien_3 = new L.geoJson(json_100km_1000ha_Topologique_Lien_3, {
+        map.createPane('pane_lien100km_3');
+        map.getPane('pane_lien100km_3').style.zIndex = 403;
+        map.getPane('pane_lien100km_3').style['mix-blend-mode'] = 'normal';
+        var layer_lien100km_3 = new L.geoJson(json_lien100km_3, {
             attribution: '<a href=""></a>',
-            pane: 'pane_100km_1000ha_Topologique_Lien_3',
-            onEachFeature: pop_100km_1000ha_Topologique_Lien_3,
-            style: style_100km_1000ha_Topologique_Lien_3_0,
+            pane: 'pane_lien100km_3',
+            onEachFeature: pop_lien100km_3,
+            style: style_lien100km_3_0,
         });
-        bounds_group.addLayer(layer_100km_1000ha_Topologique_Lien_3);
-        map.addLayer(layer_100km_1000ha_Topologique_Lien_3);
+        bounds_group.addLayer(layer_lien100km_3);
+        map.addLayer(layer_lien100km_3);
         function pop_100km_1000ha_Topologique_Noeud_4(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
@@ -218,7 +244,7 @@
         });
         osmGeocoder.addTo(map);
         var baseMaps = {};
-        L.control.layers(baseMaps,{'<img src="legend/100km_1000ha_Topologique_Noeud_4.png" /> 100km_1000ha_Topologique_Noeud': layer_100km_1000ha_Topologique_Noeud_4,'<img src="legend/100km_1000ha_Topologique_Lien_3.png" /> 100km_1000ha_Topologique_Lien': layer_100km_1000ha_Topologique_Lien_3,"100km_1000ha_Realiste_Tache": overlay_100km_1000ha_Realiste_Tache_2,'<img src="legend/100km_1000ha_Realiste_Chemin_1.png" /> 100km_1000ha_Realiste_Chemin': layer_100km_1000ha_Realiste_Chemin_1,'<img src="legend/100km_1000ha_Composante_0.png" /> 100km_1000ha_Composante': layer_100km_1000ha_Composante_0,},{collapsed:false}).addTo(map);
+        L.control.layers(baseMaps,{'<img src="legend/100km_1000ha_Topologique_Noeud_4.png" /> 100km_1000ha_Topologique_Noeud': layer_100km_1000ha_Topologique_Noeud_4,'<img src="legend/lien100km_3.png" /> lien100km': layer_lien100km_3,"tache1000ha": overlay_tache1000ha_2,'<img src="legend/chemin100km_1.png" /> chemin100km': layer_chemin100km_1,'<img src="legend/100km_4148voronoi_0.png" /> 100km_4148-voronoi': layer_100km_4148voronoi_0,},{collapsed:false}).addTo(map);
         setBounds();
         L.ImageOverlay.include({
             getBounds: function () {
